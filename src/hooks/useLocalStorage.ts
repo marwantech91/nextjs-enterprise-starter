@@ -46,5 +46,15 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     }
   };
 
-  return { value: storedValue, setValue, removeValue, isLoaded };
+  // Clear all app keys from localStorage
+  const clear = () => {
+    try {
+      window.localStorage.removeItem(key);
+      setStoredValue(initialValue);
+    } catch (error) {
+      console.warn(`Error clearing localStorage key "${key}":`, error);
+    }
+  };
+
+  return { value: storedValue, setValue, removeValue, clear, isLoaded };
 }
