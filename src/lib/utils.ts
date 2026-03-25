@@ -55,3 +55,17 @@ export function debounce<T extends (...args: unknown[]) => void>(
     timeoutId = setTimeout(() => fn(...args), delay);
   };
 }
+
+/**
+ * Capitalize the first letter of a string
+ */
+export function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/**
+ * Check if a value is a non-empty string
+ */
+export function isNonEmpty(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
