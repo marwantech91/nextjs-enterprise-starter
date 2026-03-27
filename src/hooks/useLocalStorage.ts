@@ -25,6 +25,21 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     setIsLoaded(true);
   }, [key]);
 
+  // Sync across tabs via storage event
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === key && e.newValue !== null) {
+        try {
+          setStoredValue(JSON.parse(e.newValue));
+        } catch {
+          setStoredValue(initialValue);
+        }
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, [key, initialValue]);
+
   // Update localStorage when value changes
   const setValue = (value: T | ((val: T) => T)) => {
     try {
